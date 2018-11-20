@@ -108,7 +108,7 @@ class MOSS(object):
         sock.sendall('language %s\n' % self.language)
 
         resp = sock.recv(BUFSIZE)
-        if resp == 'no':
+        if resp.strip() == 'no':
             raise MOSSException(
                     "language '%s' not accepted by server" % self.language)
 
