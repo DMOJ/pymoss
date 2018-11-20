@@ -32,7 +32,8 @@ SUPPORTED_LANGUAGES = (
     'modula2',
     'a8086',
     'javascript',
-    'plsql')
+    'plsql',
+    'verilog')
 
 for lang in SUPPORTED_LANGUAGES:
     globals()['MOSS_LANG_%s' % lang.upper()] = lang
@@ -48,7 +49,7 @@ class MOSS(object):
                  moss_port=7690,
                  sensitivity=10,  # -m
                  comment='',  # -c
-                 matching_file_limit=10,  # -n
+                 matching_file_limit=250,  # -n
                  use_experimental_server=False,  # -x
                  directory=False):
         if language not in SUPPORTED_LANGUAGES:
