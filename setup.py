@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pymoss",
-    version="0.0.1",
+    version="0.0.4",
     author="Tudor Brindus",
     author_email="me@tbrindus.ca",
     description="Library for interfacting with Stanford MOSS.",
