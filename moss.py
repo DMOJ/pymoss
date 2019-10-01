@@ -1,11 +1,6 @@
 import glob
 import socket
-import uuid
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 BUFSIZE = 1024
 SUPPORTED_LANGUAGES = (
@@ -90,28 +85,28 @@ class MOSS(object):
         try:
             result = urlparse(url)
             return all([result.scheme, result.netloc, result.path])
-        except:
+        except ValueError:
             return False
 
     def _process_file(self, sock, file_id, path, content, display_name):
-        sock.sendall('file %d %s %s %s\n' % (file_id, self.language,
-                                          len(content), display_name))
+        sock.sendall(b'file %d %s %s %s\n' % (file_id, self.language,
+                                              len(content), display_name))
         sock.sendall(content)
 
     def process(self):
         sock = socket.socket()
         sock.connect((self.moss_host, self.moss_port))
-        sock.sendall('moss %d\n' % self.user_id)
-        sock.sendall('directory %s\n' % int(self.directory))
-        sock.sendall('X %d\n' % int(self.use_experimental_server))
-        sock.sendall('maxmatches %d\n' % self.sensitivity)
-        sock.sendall('show %d\n' % self.matching_file_limit)
-        sock.sendall('language %s\n' % self.language)
+        sock.sendall(b'moss %d\n' % self.user_id)
+        sock.sendall(b'directory %s\n' % int(self.directory))
+        sock.sendall(b'X %d\n' % int(self.use_experimental_server))
+        sock.sendall(b'maxmatches %d\n' % self.sensitivity)
+        sock.sendall(b'show %d\n' % self.matching_file_limit)
+        sock.sendall(b'language %s\n' % self.language)
 
         resp = sock.recv(BUFSIZE)
-        if resp.strip() == 'no':
+        if resp.strip() == b'no':
             raise MOSSException(
-                    "language '%s' not accepted by server" % self.language)
+                "language '%s' not accepted by server" % self.language)
 
         for path, content, name in self.staged_files[1]:
             self._process_file(sock, 0, path, content, name)
@@ -119,16 +114,15 @@ class MOSS(object):
         for i, (path, content, name) in enumerate(self.staged_files[0]):
             self._process_file(sock, i + 1, path, content, name)
 
-        sock.sendall('query 0 %s\n' % self.comment)
+        sock.sendall(b'query 0 %s\n' % self.comment)
 
         resp = sock.recv(BUFSIZE)
-        sock.sendall('end\n')
+        sock.sendall(b'end\n')
         sock.close()
 
         url = resp.strip()
         if not self._url_is_valid(url):
             raise MOSSException(
-                    "server returned invalid response URL '%s'" % url)
+                "server returned invalid response URL '%s'" % url)
 
         return url
-
