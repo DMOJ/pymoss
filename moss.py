@@ -114,7 +114,7 @@ class MOSS(object):
         for i, (path, content, name) in enumerate(self.staged_files[0]):
             self._process_file(sock, i + 1, path, content, name)
 
-        sock.sendall(b'query 0 %s\n' % self.comment)
+        sock.sendall(b'query 0 %s\n' % self.comment.encode('utf-8'))
 
         resp = sock.recv(BUFSIZE)
         sock.sendall(b'end\n')
