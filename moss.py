@@ -70,7 +70,7 @@ class MOSS(object):
 
         files = glob.glob(path) if wildcard else [path]
         for path in files:
-            with open(path, 'r') as f:
+            with open(path, 'rb') as f:
                 self.add_file_from_memory(path, f.read(),
                                           display_name=display_name, **kwargs)
 
@@ -89,8 +89,8 @@ class MOSS(object):
             return False
 
     def _process_file(self, sock, file_id, path, content, display_name):
-        sock.sendall(b'file %d %s %s %s\n' % (file_id, self.language,
-                                              len(content), display_name))
+        sock.sendall(b'file %d %s %d %s\n' % (file_id, self.language.encode('utf-8'),
+                                              len(content), display_name.encode('utf-8')))
         sock.sendall(content)
 
     def process(self):
