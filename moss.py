@@ -97,11 +97,11 @@ class MOSS(object):
         sock = socket.socket()
         sock.connect((self.moss_host, self.moss_port))
         sock.sendall(b'moss %d\n' % self.user_id)
-        sock.sendall(b'directory %s\n' % int(self.directory))
+        sock.sendall(b'directory %d\n' % int(self.directory))
         sock.sendall(b'X %d\n' % int(self.use_experimental_server))
         sock.sendall(b'maxmatches %d\n' % self.sensitivity)
         sock.sendall(b'show %d\n' % self.matching_file_limit)
-        sock.sendall(b'language %s\n' % self.language)
+        sock.sendall(b'language %s\n' % self.language.encode('utf-8'))
 
         resp = sock.recv(BUFSIZE)
         if resp.strip() == b'no':
