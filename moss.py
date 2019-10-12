@@ -120,7 +120,7 @@ class MOSS(object):
         sock.sendall(b'end\n')
         sock.close()
 
-        url = resp.strip()
+        url = resp.strip().decode('utf-8')
         if not self._url_is_valid(url):
             raise MOSSException(
                 "server returned invalid response URL '%s'" % url)
