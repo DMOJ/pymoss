@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as fh:
 setuptools.setup(
     py_modules=['moss'],
     name='pymoss',
-    version='0.1',
+    version='0.2',
     author='Tudor Brindus',
     author_email='me@tbrindus.ca',
     description='Library for interfacting with Stanford MOSS.',
